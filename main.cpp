@@ -14,8 +14,8 @@ using namespace std;
 // чтобы легко проверять, является ли один домен суффиксом другого (через префикс в обратной форме).
 class Domain {
 public:
-    explicit Domain(const string& domain)
-        : reversed_domain_(ReverseDomain(domain)) {}
+    explicit Domain(const string& domains_list)
+        : reversed_domain_(ReverseDomain(domains_list)) {}
 
     bool operator==(const Domain& other) const {
         return reversed_domain_ == other.reversed_domain_;
@@ -66,18 +66,11 @@ public:
     // Конструктор: заполняет множество обращённых доменов из диапазона [begin, end).
     // Использует GetReversed() для получения ключа.
     // Быстро проверяет поддомены за счёт поиска в set.
-    /*DomainChecker(Iterator begin, Iterator end) {
-        for (const auto& domain : ranges::subrange(begin, end)) {
-            forbidden_reversed_.insert(domain.GetReversed());
-        }
-    }*/
-    /* без range и с++20*/
     DomainChecker(Iterator begin, Iterator end) {
         while (begin != end) {
             forbidden_reversed_.insert((begin++)->GetReversed());
         }
     }
-
 
     // Проверяет, является ли домен или любой его супердомен запрещённым.
     // Собирает суффиксы домена по частям (в обратной записи) и ищет их в множестве.
